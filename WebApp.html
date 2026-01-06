@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>YourCode</title>
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YourCode</title>
     
     <!-- Fonts: Inter for UI, JetBrains Mono for Code -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -186,6 +180,29 @@
         }
         .btn-primary:active { opacity: 0.9; }
 
+        /* Новый стиль для вторичной кнопки */
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+            padding: 12px 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+            text-transform: uppercase;
+            margin-top: 12px; /* Отступ сверху */
+            transition: all 0.2s;
+        }
+        .btn-secondary:active { background: rgba(182, 244, 76, 0.1); }
+        .btn-secondary:hover { background: rgba(182, 244, 76, 0.05); }
+
         .stats-row {
             display: flex;
             justify-content: space-between;
@@ -358,8 +375,14 @@
                 </div>
                 <p>Полноценная среда разработки в Telegram. Создавай, тестируй и деплой проекты прямо здесь.</p>
                 
+                <!-- Существующая кнопка -->
                 <button class="btn-primary" onclick="switchTab('guide', document.getElementById('nav-docs'))">
                     <i class="fa-solid fa-book"></i> Читать Документацию
+                </button>
+
+                <!-- Новая кнопка "Создать проект" -->
+                <button class="btn-secondary" onclick="createProject()">
+                    <i class="fa-solid fa-pen-to-square"></i> Создать проект
                 </button>
             </div>
 
@@ -619,8 +642,19 @@
                 tg.HapticFeedback.impactOccurred('light');
             }
         }
+
+        function createProject() {
+            if (tg && tg.sendData) {
+                // Отправляет данные боту. При этом WebApp закроется.
+                tg.sendData("📝 Создать проект");
+            } else {
+                // Фоллбек для тестирования в браузере
+                console.log("Send to bot: 📝 Создать проект");
+                // Можно добавить визуальный фидбек, если тестируем не в Telegram
+                alert("Команда отправлена: 📝 Создать проект (работает внутри Telegram)");
+            }
+        }
     </script>
 </body>
 </html>
-
 
