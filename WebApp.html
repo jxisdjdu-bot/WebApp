@@ -388,7 +388,7 @@
 
             <div class="stats-row fade-in" style="animation-delay: 0.1s;">
                 <div class="stat-item">
-                    <span class="stat-val">8</span>
+                    <span class="stat-val">10+</span>
                     <span class="stat-label">Языков</span>
                 </div>
                 <div class="stat-item">
@@ -410,8 +410,19 @@
                 </h2>
             </div>
 
-            <!-- 1-3. Compiler Capabilities -->
+            <!-- 1. AI Code Generation -->
             <div class="fade-in" style="animation-delay: 0.1s;">
+                <div class="file-tab active-mock">generator.py</div>
+                <div class="file-content">
+                    <div class="feature-title"><i class="fa-solid fa-robot" style="color: var(--accent-primary)"></i> AI Code Generation</div>
+                    <div class="feature-desc">
+                        Генерация полноценных проектов с помощью ИИ. Просто опиши, что нужно создать, и получи готовый рабочий код с автоматической отладкой и тестированием.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Auto-Compilation -->
+            <div class="fade-in" style="animation-delay: 0.15s;">
                 <div class="file-tab active-mock">build_config.json</div>
                 <div class="file-content">
                     <div class="feature-title"><i class="fa-solid fa-box-archive" style="color: var(--accent-primary)"></i> Auto-Compilation</div>
@@ -426,8 +437,19 @@
                 </div>
             </div>
 
-            <!-- 4. Testing & Fixing -->
+            <!-- 3. Code Editor -->
             <div class="fade-in" style="animation-delay: 0.2s;">
+                <div class="file-tab active-mock">editor.js</div>
+                <div class="file-content">
+                    <div class="feature-title"><i class="fa-solid fa-code" style="color: var(--accent-primary)"></i> AI Code Editor</div>
+                    <div class="feature-desc">
+                        Редактируй проекты с помощью ИИ. Объясняй код, улучшай отдельные файлы или весь проект целиком. Публикуй улучшения как форки в библиотеке.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Testing & Fixing -->
+            <div class="fade-in" style="animation-delay: 0.25s;">
                 <div class="file-tab active-mock">debug_runner.py</div>
                 <div class="file-content">
                     <div class="feature-title"><i class="fa-solid fa-bug-slash" style="color: var(--accent-primary)"></i> Smart Debug & Fix</div>
@@ -437,224 +459,51 @@
                 </div>
             </div>
 
-            <!-- 5. Languages Support -->
+            <!-- 5. Code Compiler -->
             <div class="fade-in" style="animation-delay: 0.3s;">
+                <div class="file-tab active-mock">compiler.ts</div>
+                <div class="file-content">
+                    <div class="feature-title"><i class="fa-solid fa-play" style="color: var(--accent-primary)"></i> Code Compiler</div>
+                    <div class="feature-desc">
+                        Запускай и тестируй свои проекты прямо в Telegram. Взаимодействуй с запущенными скриптами, получай вывод в реальном времени.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Languages Support -->
+            <div class="fade-in" style="animation-delay: 0.35s;">
                 <div class="file-tab active-mock">stack.yaml</div>
                 <div class="file-content">
-                    <div class="feature-title"><i class="fa-solid fa-code" style="color: var(--accent-primary)"></i> 8 Languages Support</div>
+                    <div class="feature-title"><i class="fa-solid fa-code" style="color: var(--accent-primary)"></i> 10+ Languages Support</div>
                     <div class="lang-grid">
                         <div class="lang-badge">Python</div>
-                        <div class="lang-badge">HTML</div>
+                        <div class="lang-badge">JavaScript</div>
+                        <div class="lang-badge">TypeScript</div>
                         <div class="lang-badge">GO</div>
-                        <div class="lang-badge">C++</div>
-                        <div class="lang-badge">Java</div>
-                        <div class="lang-badge">JS</div>
-                        <div class="lang-badge">TS</div>
                         <div class="lang-badge">Rust</div>
+                        <div class="lang-badge">Java</div>
+                        <div class="lang-badge">C++</div>
+                        <div class="lang-badge">C</div>
+                        <div class="lang-badge">HTML</div>
+                        <div class="lang-badge">CSS</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 6. Community -->
+            <!-- 7. Public Library -->
             <div class="fade-in" style="animation-delay: 0.4s;">
-                <div class="file-tab active-mock">community.db</div>
+                <div class="file-tab active-mock">library.db</div>
                 <div class="file-content">
-                    <div class="feature-title"><i class="fa-solid fa-users" style="color: var(--accent-primary)"></i> Social Coding</div>
+                    <div class="feature-title"><i class="fa-solid fa-book" style="color: var(--accent-primary)"></i> Public Library</div>
                     <div class="feature-desc">
-                        Система рейтинга авторов, возможность делать форки и улучшать чужие проекты.
-                        <br><br>
-                        <span class="text-comment" onclick="switchTab('guide', document.getElementById('nav-docs'))" style="cursor: pointer; text-decoration: underline;">
-                            // Подробнее читайте в DOCS
-                        </span>
+                        Публичная библиотека скриптов с сортировкой по популярности. Сохраняй проекты, создавай форки, улучшай и публикуй свои версии.
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- SECTION: DOCS -->
-        <section id="guide" class="section-view">
-            <div style="margin-bottom: 20px;" class="fade-in">
-                <h2 class="mono" style="font-size: 1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;">
-                    DOCS.md
-                </h2>
-            </div>
-
-            <div class="card fade-in" style="animation-delay: 0.1s;">
-                
-                <!-- 1. Создание проекта -->
-                <div class="doc-section">
-                    <div class="doc-header">1. Создание проекта</div>
-                    <ul class="doc-steps">
-                        <li>Нажми <strong>"Создать проект"</strong>.</li>
-                        <li>Настрой конфигурацию своего будущего проекта.</li>
-                        <li>Введи <strong>промпт</strong> с описанием.</li>
-                        <li>После генерации готовый проект сохранится в твоем профиле во вкладку <strong>"Мои проекты"</strong>.</li>
-                    </ul>
-                </div>
-
-                <!-- 2. Профиль -->
-                <div class="doc-section">
-                    <div class="doc-header">2. Профиль</div>
-                    <div class="doc-text" style="margin-bottom: 8px;">В профиле ты можешь найти:</div>
-                    <ul class="doc-steps">
-                        <li><strong>Мои проекты</strong>: Список твоих проектов.</li>
-                        <li><strong>Сохраненные проекты</strong>: Проекты, которые ты сохранил из Библиотеки.</li>
-                        <li><strong>Библиотека</strong>: Место, куда авторы выкладывают свои сгенерированные проекты. После сохранения ты можешь редактировать каждый файл проекта и опубликовать его как <strong>форк</strong> или попросить ИИ рассказать тебе о каждой части проекта.</li>
-                    </ul>
-                </div>
-
-                <!-- 3. Компилятор -->
-                <div class="doc-section">
-                    <div class="doc-header">3. Компилятор</div>
-                    <div class="doc-text">
-                        Тут ты можешь протестировать твои созданные и сохраненные проекты. Запускай, взаимодействуй с скриптом как в обычной среде исполнения!
-                    </div>
-                </div>
-
-                <!-- 4. Редактор кода -->
-                <div class="doc-section">
-                    <div class="doc-header">4. Редактор кода</div>
-                    <div class="doc-text">
-                        Здесь ты можешь выбрать проекты и редактировать их с помощью ИИ, а так же публиковать улучшения как своих скриптов в библиотеке, так и улучшение (форки) оригинальных скриптов.
-                    </div>
-                </div>
-
-                <!-- 5. Улучшить код -->
-                <div class="doc-section" style="margin-bottom: 0;">
-                    <div class="doc-header">5. Улучшить код</div>
-                    <div class="doc-text">
-                        Инструмент для улучшения твоего кода. Прикрепи файлы, что хочешь улучшить, и опиши улучшения ИИ. После улучшения ты так же получишь твой улучшенный код.
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- SECTION: PRO (ОБНОВЛЕНО) -->
-        <section id="pro" class="section-view">
-            <div class="pricing-table fade-in" style="animation-delay: 0.1s; border: 1px solid var(--glass-border); background: var(--bg-card-glass); border-radius: var(--radius-md);">
-                <div class="pricing-header" style="background: rgba(182, 244, 76, 0.05); padding: 20px; text-align: center; border-bottom: 1px solid var(--glass-border);">
-                    <div class="mono" style="color: var(--text-main); font-weight:bold;">SUBSCRIPTION.json</div>
-                    <div style="font-size: 2rem; font-weight: 700; font-family: 'JetBrains Mono'; color: var(--accent-primary); margin-top: 10px;">
-                        290₽<span style="font-size: 1rem; color: var(--text-muted); font-weight: normal;">/mo</span>
-                    </div>
-                </div>
-                <div style="padding: 20px;">
-                    <ul class="check-list" style="list-style: none;">
-                        <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
-                            <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Все функции бесплатной подписки</span>
-                        </li>
-                        <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
-                            <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Неограниченное количество проектов</span>
-                        </li>
-                        <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
-                            <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Компилятор кода (Build & Run)</span>
-                        </li>
-                        <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
-                            <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Объяснение кода</span>
-                        </li>
-                        <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
-                            <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Редактирование проектов</span>
-                        </li>
-                        <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
-                            <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Сканирование безопасности</span>
-                        </li>
-                        <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
-                            <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Все языки программирования</span>
-                        </li>
-                        <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
-                            <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Приоритетная поддержка</span>
-                        </li>
-                        <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
-                            <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Расширенные настройки генерации</span>
-                        </li>
-                        <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
-                            <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Экспорт в различные форматы (EXE, APK)</span>
-                        </li>
-                         <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
-                            <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Приоритетная очередь генерации</span>
-                        </li>
-                    </ul>
-                    <button class="btn-primary" style="margin-top: 20px; background: transparent; border: 1px solid var(--accent-primary); color: var(--accent-primary);">
-                        UPGRADE
-                    </button>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Bottom Navigation (Status Bar) -->
-    <nav class="bottom-nav">
-        <!-- Status Bar Icon -->
-        <div style="background: var(--accent-primary); height: 100%; display: flex; align-items: center; padding: 0 10px; margin-left: -10px;">
-             <i class="fa-solid fa-code-branch" style="color: #000;"></i>
-        </div>
-        
-        <a href="#" class="nav-item active" onclick="switchTab('home', this)">
-            <span>MAIN</span>
-        </a>
-        <a href="#" class="nav-item" onclick="switchTab('features', this)">
-            <span>FEATURES</span>
-        </a>
-        <a href="#" class="nav-item" id="nav-docs" onclick="switchTab('guide', this)">
-            <span>DOCS</span>
-        </a>
-        <a href="#" class="nav-item" onclick="switchTab('pro', this)">
-            <span>PRO</span>
-        </a>
-        
-        <div style="margin-left: auto; font-size: 0.7rem; color: var(--text-muted); font-family: 'JetBrains Mono'; display: none;">
-            Ln 1, Col 1
-        </div>
-    </nav>
-
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-        const tg = window.Telegram?.WebApp;
-        if (tg) {
-            tg.expand();
-            tg.ready();
-            tg.setHeaderColor('#111111');
-            tg.setBackgroundColor('#111111');
-        }
-
-        function switchTab(tabId, navElement) {
-            document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            navElement.classList.add('active');
-            
-            window.scrollTo(0, 0);
-            if (tg?.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
-        }
-
-        function createProject() {
-            if (tg && tg.sendData) {
-                // Отправляет данные боту. При этом WebApp закроется.
-                tg.sendData("📝 Создать проект");
-            } else {
-                // Фоллбек для тестирования в браузере
-                console.log("Send to bot: 📝 Создать проект");
-                // Можно добавить визуальный фидбек, если тестируем не в Telegram
-                alert("Команда отправлена: 📝 Создать проект (работает внутри Telegram)");
-            }
-        }
-    </script>
-</body>
-</html>
-
+            <!-- 8. Code Explanation -->
+            <div class="fade-in" style="animation-delay: 0.45s;">
+                <div class="file-tab active-mock">explainer.py</div>
+                <div class="file-content">
+                    <div class="feature-title"><i class="fa-solid fa-comment-dots" style="color: var(--accent-primary)"></i> AI Code Explanation</div>
+                    <div class="feature-d
