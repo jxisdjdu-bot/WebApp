@@ -388,7 +388,7 @@
 
             <div class="stats-row fade-in" style="animation-delay: 0.1s;">
                 <div class="stat-item">
-                    <span class="stat-val">10+</span>
+                    <span class="stat-val">7</span>
                     <span class="stat-label">Языков</span>
                 </div>
                 <div class="stat-item">
@@ -396,7 +396,7 @@
                     <span class="stat-label">Тесты</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-val">EXE/APK</span>
+                    <span class="stat-val">EXE</span>
                     <span class="stat-label">Build</span>
                 </div>
             </div>
@@ -430,8 +430,6 @@
                         Создание исполняемых файлов прямо во время генерации проекта:
                         <ul style="margin-top: 8px; padding-left: 20px; color: var(--text-main); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;">
                             <li>Rust <span style="color: var(--text-muted)">-></span> <span class="text-string">.EXE</span></li>
-                            <li>Java <span style="color: var(--text-muted)">-></span> <span class="text-string">.APK</span> (Android)</li>
-                            <li>C++  <span style="color: var(--text-muted)">-></span> <span class="text-string">.EXE</span></li>
                         </ul>
                     </div>
                 </div>
@@ -474,7 +472,7 @@
             <div class="fade-in" style="animation-delay: 0.35s;">
                 <div class="file-tab active-mock">stack.yaml</div>
                 <div class="file-content">
-                    <div class="feature-title"><i class="fa-solid fa-code" style="color: var(--accent-primary)"></i> 10+ Languages Support</div>
+                    <div class="feature-title"><i class="fa-solid fa-code" style="color: var(--accent-primary)"></i> 7 Languages Support</div>
                     <div class="lang-grid">
                         <div class="lang-badge">Python</div>
                         <div class="lang-badge">JavaScript</div>
@@ -483,9 +481,7 @@
                         <div class="lang-badge">Rust</div>
                         <div class="lang-badge">Java</div>
                         <div class="lang-badge">C++</div>
-                        <div class="lang-badge">C</div>
                         <div class="lang-badge">HTML</div>
-                        <div class="lang-badge">CSS</div>
                     </div>
                 </div>
             </div>
@@ -596,7 +592,7 @@
                         <li>Скачивай проекты в <strong>ZIP архивах</strong> с полной структурой.</li>
                         <li>Публикуй свои проекты в библиотеку для других пользователей.</li>
                     </ul>
-                </div>
+                    </div>
 
                 <!-- 6. Улучшить код -->
                 <div class="doc-section">
@@ -631,7 +627,7 @@
                 <div class="pricing-header" style="background: rgba(182, 244, 76, 0.05); padding: 20px; text-align: center; border-bottom: 1px solid var(--glass-border);">
                     <div class="mono" style="color: var(--text-main); font-weight:bold;">SUBSCRIPTION.json</div>
                     <div style="font-size: 2rem; font-weight: 700; font-family: 'JetBrains Mono'; color: var(--accent-primary); margin-top: 10px;">
-                        290₽<span style="font-size: 1rem; color: var(--text-muted); font-weight: normal;">/mo</span>
+                        149₽<span style="font-size: 1rem; color: var(--text-muted); font-weight: normal;">/mo</span>
                     </div>
                 </div>
                 <div style="padding: 20px;">
@@ -674,15 +670,15 @@
                         </li>
                         <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
                             <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
-                            <span>Экспорт в различные форматы (EXE, APK)</span>
+                            <span>Экспорт в различные форматы</span>
                         </li>
                          <li style="margin-bottom: 12px; font-family: 'JetBrains Mono'; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; line-height: 1.4;">
                             <i class="fa-solid fa-check-square" style="color: var(--accent-primary); margin-top: 3px;"></i> 
                             <span>Приоритетная очередь генерации</span>
                         </li>
                     </ul>
-                    <button class="btn-primary" style="margin-top: 20px; background: transparent; border: 1px solid var(--accent-primary); color: var(--accent-primary);">
-                        UPGRADE
+                    <button class="btn-primary" style="margin-top: 20px;" onclick="buyPremium()">
+                        <i class="fa-solid fa-crown"></i> ОФОРМИТЬ ПОДПИСКУ
                     </button>
                 </div>
             </div>
@@ -750,6 +746,21 @@
                 // Фоллбек для тестирования в браузере
                 console.log("Send to bot: 📝 Создать проект");
                 alert("Команда отправлена: 📝 Создать проект\n\n(В Telegram WebApp бот получит команду и откроет создание проекта)");
+            }
+        }
+
+        function buyPremium() {
+            if (tg && tg.sendData) {
+                // Отправляем команду для покупки премиум подписки
+                tg.sendData("buy_premium");
+                // Закрываем WebApp после отправки
+                if (tg.close) {
+                    tg.close();
+                }
+            } else {
+                // Фоллбек для тестирования в браузере
+                console.log("Send to bot: buy_premium");
+                alert("Команда отправлена: buy_premium\n\n(В Telegram WebApp бот получит команду и откроет страницу оплаты)");
             }
         }
     </script>
