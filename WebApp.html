@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -225,7 +225,7 @@
         }
         .stat-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
 
-        /* --- TABS & CONTENT (FEATURS) --- */
+        /* --- TABS & CONTENT (FEATURES) --- */
         .file-tab {
             display: inline-block;
             background: #2D2D2D;
@@ -313,6 +313,46 @@
             padding-left: 5px;
         }
 
+        /* --- FAQ --- */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .faq-item {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+        .faq-item summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 12px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary::before {
+            content: ">";
+            color: var(--accent-primary);
+            font-weight: 700;
+        }
+        .faq-item[open] summary {
+            background: rgba(182, 244, 76, 0.06);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .faq-answer {
+            padding: 12px 14px 14px;
+            font-size: 0.83rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
         /* --- BOTTOM NAV --- */
         .bottom-nav {
             position: fixed;
@@ -388,7 +428,7 @@
 
             <div class="stats-row fade-in" style="animation-delay: 0.1s;">
                 <div class="stat-item">
-                    <span class="stat-val">7</span>
+                    <span class="stat-val">9</span>
                     <span class="stat-label">Языков</span>
                 </div>
                 <div class="stat-item">
@@ -463,7 +503,7 @@
                 <div class="file-content">
                     <div class="feature-title"><i class="fa-solid fa-play" style="color: var(--accent-primary)"></i> Code Compiler</div>
                     <div class="feature-desc">
-                        Запускай и тестируй свои проекты прямо в Telegram. Взаимодействуй с запущенными скриптами, получай вывод в реальном времени.
+                        Запускай и тестируй проекты прямо в Telegram. Сейчас компилятор поддерживает запуск Python-проектов, поддержка других языков добавляется.
                     </div>
                 </div>
             </div>
@@ -472,16 +512,18 @@
             <div class="fade-in" style="animation-delay: 0.35s;">
                 <div class="file-tab active-mock">stack.yaml</div>
                 <div class="file-content">
-                    <div class="feature-title"><i class="fa-solid fa-code" style="color: var(--accent-primary)"></i> 7 Languages Support</div>
+                    <div class="feature-title"><i class="fa-solid fa-code" style="color: var(--accent-primary)"></i> 9 Languages + Auto Mode</div>
                     <div class="lang-grid">
+                        <div class="lang-badge">Auto</div>
                         <div class="lang-badge">Python</div>
+                        <div class="lang-badge">HTML</div>
                         <div class="lang-badge">JavaScript</div>
                         <div class="lang-badge">TypeScript</div>
                         <div class="lang-badge">GO</div>
                         <div class="lang-badge">Rust</div>
                         <div class="lang-badge">Java</div>
                         <div class="lang-badge">C++</div>
-                        <div class="lang-badge">HTML</div>
+                        <div class="lang-badge">C#</div>
                     </div>
                 </div>
             </div>
@@ -621,6 +663,100 @@
             </div>
         </section>
 
+        <!-- SECTION: FAQ -->
+        <section id="faq" class="section-view">
+            <div style="margin-bottom: 20px;" class="fade-in">
+                <h2 class="mono" style="font-size: 1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;">
+                    FAQ.md
+                </h2>
+            </div>
+
+            <div class="card fade-in" style="animation-delay: 0.1s;">
+                <div class="faq-list">
+                    <details class="faq-item" open>
+                        <summary>Что делает режим Auto в боте?</summary>
+                        <div class="faq-answer">Режим Auto нужен для случаев, когда ты не хочешь вручную выбирать язык и стек. Бот анализирует твой запрос, тип задачи и структуру проекта, после чего сам подбирает наиболее подходящие технологии. Если нужна максимальная гибкость и быстрый старт, лучше выбирать именно Auto. Если же у тебя есть жесткие требования по языку, тогда выбирай языки вручную в конфигурации.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Какие языки поддерживает бот?</summary>
+                        <div class="faq-answer">В конфиге бота доступны Auto, Python, HTML, JavaScript, TypeScript, Go, Rust, Java, C++ и C#. Часть языков относится к премиум-возможностям, поэтому список кнопок зависит от твоей подписки. Если нужен конкретный язык, лучше явно отметить его в конфигурации перед генерацией.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Почему генерация есть на многих языках, а компилятор ограничен?</summary>
+                        <div class="faq-answer">Генерация и компилятор в боте работают как разные модули. Генератор умеет собирать проекты на широком наборе языков, а компилятор сейчас в первую очередь ориентирован на Python-сценарии запуска. Это нормальное состояние на этапе развития: сначала расширяется генерация, затем постепенно добавляются стабильные сценарии запуска и выполнения для остальных языков.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Как правильно описывать задачу, чтобы бот дал лучший результат?</summary>
+                        <div class="faq-answer">Чем конкретнее запрос, тем лучше итоговый проект. Указывай цель, основные функции, желаемый формат интерфейса, ограничения и важные детали по архитектуре. Если есть предпочтения по библиотекам или структуре файлов, лучше сразу написать это в промпте. Хороший промпт обычно дает меньше итераций правок и быстрее приводит к рабочему проекту.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Что входит в бесплатную подписку бота?</summary>
+                        <div class="faq-answer">Бесплатная подписка дает базовый доступ к созданию проектов и основным возможностям генерации. При этом часть продвинутых функций и часть языков ограничены. Такой режим подходит для теста сервиса, простых задач и знакомства с логикой бота. Для регулярной работы и сложных проектов обычно удобнее премиум.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Что дает Premium в боте?</summary>
+                        <div class="faq-answer">Premium открывает расширенный набор функций: больше языков, инструменты редактирования и объяснения кода, доступ к компилятору, расширенные настройки генерации и приоритетную обработку запросов. Если ты часто работаешь с проектами, Premium обычно заметно экономит время и уменьшает количество ручных правок.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Как создать проект через бота?</summary>
+                        <div class="faq-answer">Запусти сценарий создания проекта, открой конфигурацию и выбери нужные параметры: язык, сложность, тип проекта и дополнительные требования. После этого отправь подробное описание задачи. Бот сгенерирует структуру файлов, код и подготовит проект к выдаче в архиве. Если нужно, затем можно перейти к улучшению или редактированию.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Где находятся мои проекты в боте?</summary>
+                        <div class="faq-answer">Все созданные проекты сохраняются в твоем профиле в разделе «Мои проекты». Оттуда можно открыть проект, запустить его, улучшить, отредактировать отдельные файлы или выгрузить архив. Это основной рабочий раздел для повторной работы с уже сгенерированными проектами.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Можно ли редактировать один файл, а не весь проект?</summary>
+                        <div class="faq-answer">Да, бот поддерживает точечное редактирование конкретного файла. Это удобно, когда нужно поправить только одну часть проекта, не трогая остальной код. Также доступен режим улучшения всего проекта, если требуется комплексная переработка архитектуры и логики.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Бот умеет объяснять код простым языком?</summary>
+                        <div class="faq-answer">Да, бот может объяснить как отдельный файл, так и общую логику проекта. Обычно в ответе дается разбор структуры, назначение ключевых частей и практические комментарии по улучшению. Это полезно, если проект большой или если нужно быстро вникнуть в чужой код.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Что такое библиотека проектов в боте?</summary>
+                        <div class="faq-answer">Библиотека - это публичный раздел с проектами и версиями от пользователей. Ты можешь просматривать проекты, сохранять их себе, делать форки и публиковать свои улучшенные варианты. Это удобно для поиска готовых заготовок и ускорения разработки.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Для чего нужен сканер безопасности?</summary>
+                        <div class="faq-answer">Сканер помогает выявить подозрительные конструкции и потенциальные риски в коде до публикации или запуска. Он не заменяет полноценный аудит, но позволяет заранее заметить очевидные проблемы. Для продакшн-задач лучше использовать его как первый фильтр и дополнять ручной проверкой.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Можно ли выбрать несколько языков одновременно?</summary>
+                        <div class="faq-answer">Да, в конфигурации можно выбрать сразу несколько языков для мультиязычного проекта. Это полезно, когда нужен, например, backend + frontend или вспомогательные модули на другом языке. Если не уверен, что выбрать, можно оставить Auto, и бот подберет стек самостоятельно.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Почему генерация иногда идет долго?</summary>
+                        <div class="faq-answer">Время генерации зависит от сложности запроса, объема проекта, выбранных функций и текущей нагрузки. Если в задаче много модулей, сложная логика или дополнительные требования по качеству, обработка занимает больше времени. Чтобы ускорить результат, дели очень большие задачи на этапы.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>В каком формате бот отдает готовый проект?</summary>
+                        <div class="faq-answer">Обычно бот отправляет проект архивом ZIP со структурой файлов и готовым кодом. Это позволяет быстро скачать результат, открыть локально и продолжить разработку. При необходимости можно повторно улучшить проект через встроенные инструменты бота.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Как проверить, активна ли подписка?</summary>
+                        <div class="faq-answer">Статус подписки отображается в профиле и в разделе PRO. Если подписка активна, показывается соответствующий статус и дата окончания. Если после оплаты статус не обновился моментально, обычно помогает повторное открытие раздела через несколько секунд.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Что делать, если бот выдает ошибку при запуске проекта?</summary>
+                        <div class="faq-answer">Сначала проверь, что проект действительно был создан без ошибок и содержит корректную точку входа. Затем попробуй повторить запуск и уточнить, какой именно модуль падает. Если ошибка сохраняется, отправь проект в режим улучшения или отредактируй проблемный файл точечно через редактор.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Можно ли улучшить уже готовый проект без новой генерации?</summary>
+                        <div class="faq-answer">Да, это один из основных сценариев. Ты можешь взять существующий проект и улучшить либо отдельные файлы, либо весь код целиком через инструменты редактора. Такой подход удобен для итеративной доработки без полного пересоздания проекта с нуля.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Как публиковать свои проекты в библиотеку?</summary>
+                        <div class="faq-answer">После завершения работы над проектом выбери публикацию из раздела с проектами, добавь понятное название и описание. После публикации другие пользователи смогут просматривать и форкать твою версию. Лучше публиковать чистые, рабочие проекты с нормальной структурой файлов.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Как получить лучший результат с первого раза?</summary>
+                        <div class="faq-answer">Используй четкий промпт: опиши цель, ключевые функции, ограничения, желаемую структуру и что считается «готовым результатом». Если проект большой, разбивай задачу на этапы: сначала базовая версия, потом улучшения и рефакторинг. Такой подход дает наиболее стабильный и предсказуемый результат в боте.</div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
         <!-- SECTION: PRO (ОБНОВЛЕНО) -->
         <section id="pro" class="section-view">
             <div class="pricing-table fade-in" style="animation-delay: 0.1s; border: 1px solid var(--glass-border); background: var(--bg-card-glass); border-radius: var(--radius-md);">
@@ -679,8 +815,8 @@
                     </ul>
                     <div id="subscription-info" style="margin-top: 20px;">
                         <button id="subscribe-btn" class="btn-primary" onclick="buyPremium()" style="display: none;">
-                            <i class="fa-solid fa-crown"></i> ОФОРМИТЬ ПОДПИСКУ
-                        </button>
+                        <i class="fa-solid fa-crown"></i> ОФОРМИТЬ ПОДПИСКУ
+                    </button>
                         <div id="subscription-expires" style="display: none; text-align: center; padding: 16px; background: rgba(182, 244, 76, 0.1); border: 1px solid var(--accent-primary); border-radius: var(--radius-sm); font-family: 'JetBrains Mono', monospace;">
                             <div style="color: var(--accent-primary); font-weight: 600; margin-bottom: 8px;">
                                 <i class="fa-solid fa-check-circle"></i> Премиум подписка активна
@@ -714,6 +850,9 @@
         </a>
         <a href="#" class="nav-item" id="nav-docs" onclick="switchTab('guide', this)">
             <span>DOCS</span>
+        </a>
+        <a href="#" class="nav-item" id="nav-faq" onclick="switchTab('faq', this)">
+            <span>FAQ</span>
         </a>
         <a href="#" class="nav-item" onclick="switchTab('pro', this)">
             <span>PRO</span>
@@ -923,4 +1062,7 @@
     </script>
 </body>
 </html>
+
+
+
 
