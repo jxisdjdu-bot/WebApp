@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -167,6 +167,35 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
+        }
+        .projects-pager {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .pager-info {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .version-list {
+            margin-top: 8px;
+            border-top: 1px dashed var(--glass-border);
+            padding-top: 8px;
+        }
+        .version-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .version-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
         }
 
         /* --- SECTION: HOME --- */
@@ -918,6 +947,8 @@
             expiresAt: null
         };
         let webProjects = [];
+        let projectsPage = 1;
+        const PROJECTS_PER_PAGE = 6;
 
         // Функция для получения информации о подписке из URL параметров или localStorage
         function getSubscriptionInfo() {
@@ -1112,19 +1143,24 @@
 
         function loadProjectsFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
-            const projectsParam = urlParams.get('projects');
-            if (!projectsParam) {
-                webProjects = [];
-                renderProjects();
-                return;
-            }
+            const projectsB64 = urlParams.get('projects_b64');
+            const projectsParam = urlParams.get('projects'); // backward compatibility
             try {
-                const parsed = JSON.parse(projectsParam);
-                webProjects = Array.isArray(parsed) ? parsed : [];
+                if (projectsB64) {
+                    const json = decodeBase64Url(projectsB64);
+                    const parsed = JSON.parse(json);
+                    webProjects = Array.isArray(parsed) ? parsed : [];
+                } else if (projectsParam) {
+                    const parsed = JSON.parse(projectsParam);
+                    webProjects = Array.isArray(parsed) ? parsed : [];
+                } else {
+                    webProjects = [];
+                }
             } catch (e) {
                 console.error("Failed to parse projects payload:", e);
                 webProjects = [];
             }
+            projectsPage = 1;
             renderProjects();
         }
 
@@ -1135,13 +1171,48 @@
                 root.innerHTML = '<div class="card">Проекты не найдены. Создай проект в боте и открой WebApp снова.</div>';
                 return;
             }
-            root.innerHTML = webProjects.map(p => {
+            const totalPages = Math.max(1, Math.ceil(webProjects.length / PROJECTS_PER_PAGE));
+            if (projectsPage > totalPages) projectsPage = totalPages;
+            if (projectsPage < 1) projectsPage = 1;
+            const from = (projectsPage - 1) * PROJECTS_PER_PAGE;
+            const slice = webProjects.slice(from, from + PROJECTS_PER_PAGE);
+
+            const pagerHtml = `
+                <div class="projects-pager">
+                    <button class="btn-secondary" style="margin-top:0;width:auto;padding:8px 12px;" ${projectsPage <= 1 ? "disabled" : ""} onclick="changeProjectsPage(-1)">
+                        ◀
+                    </button>
+                    <div class="pager-info">Страница ${projectsPage} / ${totalPages} · Проектов: ${webProjects.length}</div>
+                    <button class="btn-secondary" style="margin-top:0;width:auto;padding:8px 12px;" ${projectsPage >= totalPages ? "disabled" : ""} onclick="changeProjectsPage(1)">
+                        ▶
+                    </button>
+                </div>
+            `;
+
+            root.innerHTML = pagerHtml + slice.map((p, idx) => {
                 const id = String(p.id || "");
                 const name = escapeHtml(String(p.name || id.slice(0, 8) || "project"));
                 const lang = escapeHtml(String(p.lang || "—"));
                 const files = Number(p.files || 0);
+                const versions = Array.isArray(p.v) ? p.v : [];
+                const animDelay = 0.05 * idx;
+                const versionsHtml = versions.length > 0
+                    ? `
+                    <div class="version-list">
+                        ${versions.map(v => `
+                            <div class="version-row">
+                                <div class="version-meta">v${Number(v.n || 0)} · ${escapeHtml(String(v.dt || ""))}</div>
+                                <button class="btn-secondary" style="margin-top:0;width:auto;padding:6px 10px;"
+                                    onclick="projectVersionDownload('${id}','${String(v.id || "")}')">
+                                    ZIP версии
+                                </button>
+                            </div>
+                        `).join("")}
+                    </div>
+                    `
+                    : `<div class="version-meta">Версий пока нет</div>`;
                 return `
-                    <div class="project-item">
+                    <div class="project-item fade-in" style="animation-delay:${animDelay}s;">
                         <div class="project-name">${name}</div>
                         <div class="project-meta">id: ${escapeHtml(id)} | files: ${files} | lang: ${lang}</div>
                         <div class="project-actions">
@@ -1158,9 +1229,15 @@
                                 <i class="fa-solid fa-file-zipper"></i> Скачать ZIP
                             </button>
                         </div>
+                        ${versionsHtml}
                     </div>
                 `;
             }).join("");
+        }
+
+        function changeProjectsPage(delta) {
+            projectsPage += delta;
+            renderProjects();
         }
 
         function projectAction(projectId, operation) {
@@ -1170,6 +1247,25 @@
                 project_id: projectId
             };
             sendBotCommand(JSON.stringify(payload), `project ${operation}`);
+        }
+
+        function projectVersionDownload(projectId, versionId) {
+            const payload = {
+                action: "project_action",
+                operation: "download_version",
+                project_id: projectId,
+                version_id: versionId
+            };
+            sendBotCommand(JSON.stringify(payload), "download version zip");
+        }
+
+        function decodeBase64Url(input) {
+            const normalized = (input || "").replace(/-/g, "+").replace(/_/g, "/");
+            const pad = normalized.length % 4;
+            const padded = normalized + (pad ? "=".repeat(4 - pad) : "");
+            const binary = atob(padded);
+            const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+            return new TextDecoder("utf-8").decode(bytes);
         }
 
         function escapeHtml(text) {
