@@ -145,6 +145,29 @@
 
         .section-view { display: none; padding-top: 15px; }
         .section-view.active { display: block; }
+        .project-item {
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.25);
+        }
+        .project-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+        .project-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .project-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
 
         /* --- SECTION: HOME --- */
         .hero { padding: 20px 0 20px; }
@@ -439,6 +462,19 @@
                     <span class="stat-val">EXE</span>
                     <span class="stat-label">Build</span>
                 </div>
+            </div>
+
+        </section>
+
+        <!-- SECTION: PROJECTS -->
+        <section id="projects" class="section-view">
+            <div style="margin-bottom: 12px;" class="fade-in">
+                <h2 class="mono" style="font-size: 1rem; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); padding-bottom: 5px;">
+                    <i class="fa-solid fa-folder-tree"></i> MY PROJECTS
+                </h2>
+            </div>
+            <div id="projects-list" class="fade-in" style="animation-delay: 0.1s;">
+                <div class="card">Загрузка проектов...</div>
             </div>
         </section>
 
@@ -845,6 +881,9 @@
         <a href="#" class="nav-item active" onclick="switchTab('home', this)">
             <span>MAIN</span>
         </a>
+        <a href="#" class="nav-item" onclick="switchTab('projects', this)">
+            <span>PROJECTS</span>
+        </a>
         <a href="#" class="nav-item" onclick="switchTab('features', this)">
             <span>FEATURES</span>
         </a>
@@ -878,6 +917,7 @@
             isPremium: false,
             expiresAt: null
         };
+        let webProjects = [];
 
         // Функция для получения информации о подписке из URL параметров или localStorage
         function getSubscriptionInfo() {
@@ -1009,6 +1049,7 @@
         // Загружаем информацию о подписке при загрузке страницы
         window.addEventListener('DOMContentLoaded', function() {
             getSubscriptionInfo();
+            loadProjectsFromUrl();
         });
 
         // Также проверяем при открытии вкладки PRO
@@ -1023,6 +1064,9 @@
             if (tabId === 'pro') {
                 getSubscriptionInfo();
             }
+            if (tabId === 'projects') {
+                renderProjects();
+            }
             
             window.scrollTo(0, 0);
             if (tg?.HapticFeedback) {
@@ -1031,33 +1075,110 @@
         }
 
         function createProject() {
-            if (tg && tg.sendData) {
-                // Отправляет данные боту. При этом WebApp закроется.
-                tg.sendData("📝 Создать проект");
-                // Закрываем WebApp после отправки
-                if (tg.close) {
-                    tg.close();
-                }
-            } else {
-                // Фоллбек для тестирования в браузере
-                console.log("Send to bot: 📝 Создать проект");
-                alert("Команда отправлена: 📝 Создать проект\n\n(В Telegram WebApp бот получит команду и откроет создание проекта)");
-            }
+            sendBotCommand("create_project", "Создать проект");
         }
 
         function buyPremium() {
+            sendBotCommand("buy_premium", "Купить Premium");
+        }
+
+        function sendBotCommand(action, label) {
             if (tg && tg.sendData) {
-                // Отправляем команду для покупки премиум подписки
-                tg.sendData("buy_premium");
-                // Закрываем WebApp после отправки
+                tg.sendData(action);
                 if (tg.close) {
                     tg.close();
                 }
             } else {
-                // Фоллбек для тестирования в браузере
-                console.log("Send to bot: buy_premium");
-                alert("Команда отправлена: buy_premium\n\n(В Telegram WebApp бот получит команду и откроет страницу оплаты)");
+                console.log("Send to bot:", action);
+                alert(`Команда отправлена: ${action}\n\n(${label})`);
             }
+        }
+
+        function openMyProjects() {
+            sendBotCommand("my_projects", "Открытие списка проектов");
+        }
+
+        function openProjectArchitecture() {
+            sendBotCommand("project_architecture", "Открытие архитектуры проекта");
+        }
+
+        function openCodeExplain() {
+            sendBotCommand("explain_code", "Открытие меню объяснения кода");
+        }
+
+        function openZipDownload() {
+            sendBotCommand("download_zip", "Открытие меню скачивания ZIP");
+        }
+
+        function loadProjectsFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectsParam = urlParams.get('projects');
+            if (!projectsParam) {
+                webProjects = [];
+                renderProjects();
+                return;
+            }
+            try {
+                const parsed = JSON.parse(projectsParam);
+                webProjects = Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
+                console.error("Failed to parse projects payload:", e);
+                webProjects = [];
+            }
+            renderProjects();
+        }
+
+        function renderProjects() {
+            const root = document.getElementById("projects-list");
+            if (!root) return;
+            if (!Array.isArray(webProjects) || webProjects.length === 0) {
+                root.innerHTML = '<div class="card">Проекты не найдены. Создай проект в боте и открой WebApp снова.</div>';
+                return;
+            }
+            root.innerHTML = webProjects.map(p => {
+                const id = String(p.id || "");
+                const name = escapeHtml(String(p.name || id.slice(0, 8) || "project"));
+                const lang = escapeHtml(String(p.lang || "—"));
+                const files = Number(p.files || 0);
+                return `
+                    <div class="project-item">
+                        <div class="project-name">${name}</div>
+                        <div class="project-meta">id: ${escapeHtml(id)} | files: ${files} | lang: ${lang}</div>
+                        <div class="project-actions">
+                            <button class="btn-secondary" style="margin-top:0;" onclick="projectAction('${id}','architecture')">
+                                <i class="fa-solid fa-sitemap"></i> Архитектура
+                            </button>
+                            <button class="btn-secondary" style="margin-top:0;" onclick="projectAction('${id}','versions')">
+                                <i class="fa-solid fa-clock-rotate-left"></i> Версии
+                            </button>
+                            <button class="btn-secondary" style="margin-top:0;" onclick="projectAction('${id}','explain')">
+                                <i class="fa-solid fa-comment-dots"></i> Объяснить
+                            </button>
+                            <button class="btn-secondary" style="margin-top:0;" onclick="projectAction('${id}','download_zip')">
+                                <i class="fa-solid fa-file-zipper"></i> Скачать ZIP
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function projectAction(projectId, operation) {
+            const payload = {
+                action: "project_action",
+                operation: operation,
+                project_id: projectId
+            };
+            sendBotCommand(JSON.stringify(payload), `project ${operation}`);
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
     </script>
 </body>
