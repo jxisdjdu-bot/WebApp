@@ -949,6 +949,8 @@
         let webProjects = [];
         let projectsPage = 1;
         const PROJECTS_PER_PAGE = 6;
+        let selectedProjectId = null;
+        let projectsSubView = "list"; // list | versions | architecture
 
         // Функция для получения информации о подписке из URL параметров или localStorage
         function getSubscriptionInfo() {
@@ -1171,6 +1173,14 @@
                 root.innerHTML = '<div class="card">Проекты не найдены. Создай проект в боте и открой WebApp снова.</div>';
                 return;
             }
+            if (projectsSubView === "versions" && selectedProjectId) {
+                renderProjectVersionsView(root, selectedProjectId);
+                return;
+            }
+            if (projectsSubView === "architecture" && selectedProjectId) {
+                renderProjectArchitectureView(root, selectedProjectId);
+                return;
+            }
             const totalPages = Math.max(1, Math.ceil(webProjects.length / PROJECTS_PER_PAGE));
             if (projectsPage > totalPages) projectsPage = totalPages;
             if (projectsPage < 1) projectsPage = 1;
@@ -1194,32 +1204,16 @@
                 const name = escapeHtml(String(p.name || id.slice(0, 8) || "project"));
                 const lang = escapeHtml(String(p.lang || "—"));
                 const files = Number(p.files || 0);
-                const versions = Array.isArray(p.v) ? p.v : [];
                 const animDelay = 0.05 * idx;
-                const versionsHtml = versions.length > 0
-                    ? `
-                    <div class="version-list">
-                        ${versions.map(v => `
-                            <div class="version-row">
-                                <div class="version-meta">v${Number(v.n || 0)} · ${escapeHtml(String(v.dt || ""))}</div>
-                                <button class="btn-secondary" style="margin-top:0;width:auto;padding:6px 10px;"
-                                    onclick="projectVersionDownload('${id}','${String(v.id || "")}')">
-                                    ZIP версии
-                                </button>
-                            </div>
-                        `).join("")}
-                    </div>
-                    `
-                    : `<div class="version-meta">Версий пока нет</div>`;
                 return `
                     <div class="project-item fade-in" style="animation-delay:${animDelay}s;">
                         <div class="project-name">${name}</div>
                         <div class="project-meta">id: ${escapeHtml(id)} | files: ${files} | lang: ${lang}</div>
                         <div class="project-actions">
-                            <button class="btn-secondary" style="margin-top:0;" onclick="projectAction('${id}','architecture')">
+                            <button class="btn-secondary" style="margin-top:0;" onclick="openProjectArchitectureView('${id}')">
                                 <i class="fa-solid fa-sitemap"></i> Архитектура
                             </button>
-                            <button class="btn-secondary" style="margin-top:0;" onclick="projectAction('${id}','versions')">
+                            <button class="btn-secondary" style="margin-top:0;" onclick="openProjectVersionsView('${id}')">
                                 <i class="fa-solid fa-clock-rotate-left"></i> Версии
                             </button>
                             <button class="btn-secondary" style="margin-top:0;" onclick="projectAction('${id}','explain')">
@@ -1229,14 +1223,94 @@
                                 <i class="fa-solid fa-file-zipper"></i> Скачать ZIP
                             </button>
                         </div>
-                        ${versionsHtml}
                     </div>
                 `;
             }).join("");
         }
 
+        function renderProjectVersionsView(root, projectId) {
+            const p = webProjects.find(x => String(x.id) === String(projectId));
+            if (!p) {
+                projectsSubView = "list";
+                selectedProjectId = null;
+                renderProjects();
+                return;
+            }
+            const versions = Array.isArray(p.v) ? p.v : [];
+            root.innerHTML = `
+                <div class="projects-pager">
+                    <button class="btn-secondary" style="margin-top:0;width:auto;padding:8px 12px;" onclick="backToProjectsList()">◀ Назад</button>
+                    <div class="pager-info">${escapeHtml(String(p.name || p.id))} · Версии: ${versions.length}</div>
+                    <div></div>
+                </div>
+                <div class="card fade-in">
+                    ${versions.length === 0 ? '<div class="version-meta">У проекта пока нет сохранённых версий.</div>' : versions.map(v => `
+                        <div class="version-row">
+                            <div>
+                                <div class="project-name" style="font-size:0.8rem;">v${Number(v.n || 0)} · ${escapeHtml(String(v.dt || ""))}</div>
+                                <div class="version-meta">${escapeHtml(String(v.s || "Без описания изменений"))}</div>
+                            </div>
+                            <button class="btn-secondary" style="margin-top:0;width:auto;padding:6px 10px;"
+                                onclick="projectVersionDownload('${String(p.id)}','${String(v.id || "")}')">
+                                Скачать ZIP
+                            </button>
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+        }
+
+        function renderProjectArchitectureView(root, projectId) {
+            const p = webProjects.find(x => String(x.id) === String(projectId));
+            if (!p) {
+                projectsSubView = "list";
+                selectedProjectId = null;
+                renderProjects();
+                return;
+            }
+            const versions = Array.isArray(p.v) ? p.v : [];
+            const archText =
+`PROJECT: ${String(p.name || p.id)}
+ID: ${String(p.id || "")}
+LANGUAGES: ${String(p.lang || "—")}
+FILES: ${Number(p.files || 0)}
+VERSIONS: ${versions.length}
+
+BASE PROMPT:
+${String(p.prompt || "Нет исходного промпта")}
+`;
+            root.innerHTML = `
+                <div class="projects-pager">
+                    <button class="btn-secondary" style="margin-top:0;width:auto;padding:8px 12px;" onclick="backToProjectsList()">◀ Назад</button>
+                    <div class="pager-info">${escapeHtml(String(p.name || p.id))} · Архитектура</div>
+                    <div></div>
+                </div>
+                <div class="card fade-in">
+                    <pre class="mono" style="white-space:pre-wrap; font-size:0.78rem; line-height:1.45; color:var(--text-main);">${escapeHtml(archText)}</pre>
+                </div>
+            `;
+        }
+
         function changeProjectsPage(delta) {
             projectsPage += delta;
+            renderProjects();
+        }
+
+        function openProjectVersionsView(projectId) {
+            selectedProjectId = String(projectId);
+            projectsSubView = "versions";
+            renderProjects();
+        }
+
+        function openProjectArchitectureView(projectId) {
+            selectedProjectId = String(projectId);
+            projectsSubView = "architecture";
+            renderProjects();
+        }
+
+        function backToProjectsList() {
+            selectedProjectId = null;
+            projectsSubView = "list";
             renderProjects();
         }
 
