@@ -1168,12 +1168,12 @@
         function renderProjects() {
             const root = document.getElementById("projects-list");
             if (!root) return;
+            if (!subscriptionData.isPremium) {
+                root.innerHTML = '<div class="card">"Мои проекты" доступны только в премиум подписке.</div>';
+                return;
+            }
             if (!Array.isArray(webProjects) || webProjects.length === 0) {
-                if (!subscriptionData.isPremium) {
-                    root.innerHTML = '<div class="card">"Мои проекты" доступны только в премиум подписке.</div>';
-                } else {
-                    root.innerHTML = '<div class="card">Проекты не найдены. Если у вас уже есть проекты, нажмите /start в боте и перезапустите мини-приложение.</div>';
-                }
+                root.innerHTML = '<div class="card">Проекты не найдены. Если у вас уже есть проекты, нажмите /start в боте и перезапустите мини-приложение.</div>';
                 return;
             }
             if (projectsSubView === "versions" && selectedProjectId) {
