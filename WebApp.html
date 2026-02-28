@@ -187,15 +187,30 @@
         }
         .version-row {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
             gap: 8px;
             margin-bottom: 6px;
+        }
+        .version-row > div {
+            flex: 1 1 auto;
+            min-width: 0;
         }
         .version-meta {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.72rem;
             color: var(--text-muted);
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        .version-download-btn {
+            flex: 0 0 168px;
+            width: 168px;
+            min-width: 168px;
+            margin-top: 0;
+            padding: 6px 10px;
+            white-space: nowrap;
+            text-align: center;
         }
 
         /* --- SECTION: HOME --- */
@@ -1253,7 +1268,7 @@
                                 <div class="project-name" style="font-size:0.8rem;">v${Number(v.n || 0)} · ${escapeHtml(String(v.dt || ""))}</div>
                                 <div class="version-meta">${escapeHtml(String(v.s || "Без описания изменений"))}</div>
                             </div>
-                            <button class="btn-secondary" style="margin-top:0;width:auto;padding:6px 10px;"
+                            <button class="btn-secondary version-download-btn"
                                 onclick="projectVersionDownload('${String(p.id)}','${String(v.id || "")}')">
                                 Скачать ZIP
                             </button>
